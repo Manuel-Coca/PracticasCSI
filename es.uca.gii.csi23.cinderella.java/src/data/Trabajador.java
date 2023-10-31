@@ -1,0 +1,70 @@
+package data;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import util.Database;
+
+public class Trabajador {
+	private Integer _iId;
+	
+	public Integer GetId() {return _iId;}
+	public void SetId(Integer iId) {
+		_iId = iId;
+	}
+	
+	private String _sNombre;
+	
+	public String GetNombre() {return _sNombre;}
+	public void SetNombre(String sNombre) {
+		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo");
+		else _sNombre = sNombre;
+	}
+	
+	/**
+	 * Constructor publico de la clase Trabajador
+	 * @param sNombre
+	 */
+	public Trabajador(String sNombre) {this(null, sNombre);}
+	
+	/**
+	 * Constructor privado de la clase Trabajador
+	 * @param iId
+	 * @param sNombre
+	 */
+	private Trabajador(Integer iId, String sNombre) {
+		SetId(iId);
+		SetNombre(sNombre);
+	}
+	
+	/**
+	 * Devuelve una cadena con formato SuperClase.Clase@CodigoHash:Id:Nombre
+	 */
+	public String toString() {return super.toString() + ":" + GetId() + ":" + GetNombre();}
+	
+	public static Trabajador Get(Integer iId) throws IOException, SQLException {
+		Connection con = null;
+		ResultSet rs = null;
+		
+		try {
+			con = Database.Connection();
+			rs = con.createStatement().executeQuery("SELECT * FROM trabajador WHERE id = $iId$");
+			
+			
+		}
+		catch (SQLException e) { throw e; }
+		finally {
+			if (rs != null) rs.close();
+			if (con != null) con.close();
+		}
+		return null;
+	}
+}
+
+
+
+

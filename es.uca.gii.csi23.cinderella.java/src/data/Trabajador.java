@@ -1,12 +1,10 @@
 package data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import util.Database;
 
 public class Trabajador {
@@ -46,17 +44,20 @@ public class Trabajador {
 	 */
 	public String toString() {return super.toString() + ":" + GetId() + ":" + GetNombre();}
 	
+	/**
+	 * @param iId
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public static Trabajador Get(Integer iId) throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
 		
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT * FROM trabajador WHERE id = $iId$");
-			
-			
+			rs = con.createStatement().executeQuery("SELECT * FROM trabajador WHERE id = " + iId + ";");
 		}
-		catch (SQLException e) { throw e; }
 		finally {
 			if (rs != null) rs.close();
 			if (con != null) con.close();

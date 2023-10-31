@@ -1,6 +1,5 @@
 package data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ public class Trabajador {
 	private Integer _iId;
 	
 	public Integer GetId() {return _iId;}
+	
 	public void SetId(Integer iId) {
 		_iId = iId;
 	}
@@ -18,6 +18,7 @@ public class Trabajador {
 	private String _sNombre;
 	
 	public String GetNombre() {return _sNombre;}
+	
 	public void SetNombre(String sNombre) {
 		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo");
 		else _sNombre = sNombre;
@@ -45,24 +46,30 @@ public class Trabajador {
 	public String toString() {return super.toString() + ":" + GetId() + ":" + GetNombre();}
 	
 	/**
+	 * Hace una busqueda a la tabla Trabajador. Devuelve una instancia de la clase Trabajador si la busqueda ha tenido exito o NULL si no
 	 * @param iId
-	 * @return
+	 * @return TrabajadorAuxiliar
 	 * @throws IOException
 	 * @throws SQLException
 	 */
 	public static Trabajador Get(Integer iId) throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
+		Trabajador TrabajadorAuxiliar = null;
 		
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT * FROM trabajador WHERE id = " + iId + ";");
+			rs = con.createStatement().executeQuery("SELECT * FROM Trabajador WHERE id = " + iId + ";");
+			if(rs.next()) {
+				TrabajadorAuxiliar = new Trabajador(rs.getString("nombre"));
+			}
 		}
 		finally {
 			if (rs != null) rs.close();
 			if (con != null) con.close();
 		}
-		return null;
+		
+		return TrabajadorAuxiliar;
 	}
 }
 

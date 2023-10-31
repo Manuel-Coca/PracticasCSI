@@ -2,6 +2,10 @@ package data.test;
 
 import data.Trabajador;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.Test;
 
 class TrabajadorTest {
@@ -20,8 +24,19 @@ class TrabajadorTest {
 		
 		TrabajadorTest.SetId(1);
 		assertEquals(1, TrabajadorTest.GetId());
+		
 		TrabajadorTest.SetNombre("Alberto");	
 		assertEquals("Alberto", TrabajadorTest.GetNombre());
-		System.out.println(TrabajadorTest.toString());
+	}
+	
+	@Test
+	void testGet() throws IOException, SQLException {
+		Trabajador TrabajadorTest = Trabajador.Get(1);
+		assertEquals(1, TrabajadorTest.GetId());
+		assertEquals("Javier", TrabajadorTest.GetNombre());
+		
+		TrabajadorTest = Trabajador.Get(8);
+		assertNull(TrabajadorTest.GetId());
+		assertNull(TrabajadorTest.GetNombre());
 	}
 }

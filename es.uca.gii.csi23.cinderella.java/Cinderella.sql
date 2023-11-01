@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-10-2023 a las 16:46:18
+-- Tiempo de generación: 01-11-2023 a las 12:15:56
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `cinderella`
 --
+CREATE DATABASE IF NOT EXISTS `cinderella` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `cinderella`;
 
 -- --------------------------------------------------------
 

@@ -36,7 +36,7 @@ class TrabajadorTest {
 		assertEquals("Javier", TrabajadorTest.GetNombre());
 		
 		TrabajadorTest = Trabajador.Get(8);
-		assertNull(TrabajadorTest.GetId());
-		assertNull(TrabajadorTest.GetNombre());
+		assertNull(TrabajadorTest);
+		assertNull(TrabajadorTest);
 	}
 }

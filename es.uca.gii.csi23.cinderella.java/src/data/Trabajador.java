@@ -61,7 +61,7 @@ public class Trabajador {
 			con = Database.Connection();
 			rs = con.createStatement().executeQuery("SELECT * FROM Trabajador WHERE id = " + iId + ";");
 			if(rs.next()) {
-				TrabajadorAuxiliar = new Trabajador(rs.getString("nombre"));
+				TrabajadorAuxiliar = new Trabajador(rs.getInt("id"), rs.getString("nombre"));
 			}
 		}
 		finally {

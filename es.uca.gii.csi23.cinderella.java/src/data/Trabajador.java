@@ -9,26 +9,22 @@ import util.Database;
 public class Trabajador {
 	private Integer _iId;
 	
-	public Integer GetId() {return _iId;}
-	
-	public void SetId(Integer iId) {
-		_iId = iId;
-	}
+	public Integer GetId() { return _iId; }
 	
 	private String _sNombre;
 	
-	public String GetNombre() {return _sNombre;}
+	public String GetNombre() { return _sNombre; }
 	
 	public void SetNombre(String sNombre) {
-		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo");
-		else _sNombre = sNombre;
+		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo.");
+		_sNombre = sNombre;
 	}
 	
 	/**
 	 * Constructor publico de la clase Trabajador
 	 * @param sNombre
 	 */
-	public Trabajador(String sNombre) {this(null, sNombre);}
+	public Trabajador(String sNombre) { this(null, sNombre); }
 	
 	/**
 	 * Constructor privado de la clase Trabajador
@@ -36,7 +32,6 @@ public class Trabajador {
 	 * @param sNombre
 	 */
 	private Trabajador(Integer iId, String sNombre) {
-		SetId(iId);
 		SetNombre(sNombre);
 	}
 	
@@ -55,13 +50,13 @@ public class Trabajador {
 	public static Trabajador Get(Integer iId) throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
-		Trabajador TrabajadorAuxiliar = null;
+		Trabajador trabajadorAuxiliar = null;
 		
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT * FROM Trabajador WHERE id = " + iId + ";");
+			rs = con.createStatement().executeQuery("SELECT nombre FROM Trabajador WHERE id = " + iId + ";");
 			if(rs.next()) {
-				TrabajadorAuxiliar = new Trabajador(rs.getInt("id"), rs.getString("nombre"));
+				trabajadorAuxiliar = new Trabajador(rs.getInt("id"), rs.getString("nombre"));
 			}
 		}
 		finally {
@@ -69,7 +64,7 @@ public class Trabajador {
 			if (con != null) con.close();
 		}
 		
-		return TrabajadorAuxiliar;
+		return trabajadorAuxiliar;
 	}
 }
 

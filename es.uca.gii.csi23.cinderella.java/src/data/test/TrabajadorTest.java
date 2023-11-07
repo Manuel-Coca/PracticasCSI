@@ -8,35 +8,31 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 
-class TrabajadorTest {
+class trabajadorTest {
 	
 	@Test
 	void testConstructor() {
-		Trabajador TrabajadorTest = new Trabajador("Pepe");
+		Trabajador trabajadorTest = new Trabajador("Pepe");
 		
-		assertNull(TrabajadorTest.GetId());
-		assertEquals("Pepe", TrabajadorTest.GetNombre());
+		assertNull(trabajadorTest.GetId());
+		assertEquals("Pepe", trabajadorTest.GetNombre());
 	}
 	
 	@Test
 	void testSets() {
-		Trabajador TrabajadorTest = new Trabajador("Pepe");
+		Trabajador trabajadorTest = new Trabajador("Pepe");
 		
-		TrabajadorTest.SetId(1);
-		assertEquals(1, TrabajadorTest.GetId());
-		
-		TrabajadorTest.SetNombre("Alberto");	
-		assertEquals("Alberto", TrabajadorTest.GetNombre());
+		trabajadorTest.SetNombre("Alberto");	
+		assertEquals("Alberto", trabajadorTest.GetNombre());
 	}
 	
 	@Test
 	void testGet() throws IOException, SQLException {
-		Trabajador TrabajadorTest = Trabajador.Get(1);
-		assertEquals(1, TrabajadorTest.GetId());
-		assertEquals("Javier", TrabajadorTest.GetNombre());
+		Trabajador trabajadorTest = Trabajador.Get(1);
+		assertEquals(1, trabajadorTest.GetId());
+		assertEquals("Javier", trabajadorTest.GetNombre());
 		
-		TrabajadorTest = Trabajador.Get(8);
-		assertNull(TrabajadorTest.GetId());
-		assertNull(TrabajadorTest.GetNombre());
+		trabajadorTest = Trabajador.Get(8);
+		assertNull(trabajadorTest);
 	}
 }

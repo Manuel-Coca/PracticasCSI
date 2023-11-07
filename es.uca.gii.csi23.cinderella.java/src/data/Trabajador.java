@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import util.Database;
 
@@ -99,6 +101,7 @@ public class Trabajador {
 	}
 	
 	/**
+	 * Elimina un registro de la base de datos
 	 * @throws IOException
 	 * @throws SQLException
 	 */
@@ -115,5 +118,81 @@ public class Trabajador {
 		finally {
 			if (con != null) con.close();
 		}
-	}	
+	}
+	
+	/**
+	 * @param sNombre
+	 * @return String("")
+	 */
+	private static String Where(String sNombre) {
+        if(sNombre != null) return " WHERE nombre LIKE " + Database.String2Sql(sNombre, true, true);
+        return new String("");
+    }
+	
+	/**
+	 * @param searchTerm
+	 * @return ArrayList<Trabajador> aResultado
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public static List<Trabajador> Search(String sNombre) throws IOException, SQLException {
+        Connection con = null;
+        ResultSet rs = null;
+
+        try {
+            con = Database.Connection();
+            rs = con.createStatement().executeQuery("SELECT id, nombre FROM trabajador" + Where(sNombre) + " ORDER BY nombre ASC;");
+
+            List<Trabajador> aResultado = new ArrayList<>();
+            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("id"), rs.getString("nombre")));            
+            
+            return aResultado;
+        }finally {
+            if (rs != null) rs.close();
+            if (con != null) con.close();
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

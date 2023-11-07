@@ -8,31 +8,54 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 
-class trabajadorTest {
+class trabajador {
 	
 	@Test
 	void testConstructor() {
-		Trabajador trabajadorTest = new Trabajador("Pepe");
+		Trabajador trabajador = new Trabajador("Pepe");
 		
-		assertNull(trabajadorTest.GetId());
-		assertEquals("Pepe", trabajadorTest.GetNombre());
+		assertNull(trabajador.GetId());
+		assertEquals("Pepe", trabajador.GetNombre());
+		assertNull(trabajador.GetDeletedAt());
 	}
 	
 	@Test
 	void testSets() {
-		Trabajador trabajadorTest = new Trabajador("Pepe");
+		Trabajador trabajador = new Trabajador("Pepe");
 		
-		trabajadorTest.SetNombre("Alberto");	
-		assertEquals("Alberto", trabajadorTest.GetNombre());
+		trabajador.SetNombre("Alberto");
+		assertEquals("Alberto", trabajador.GetNombre());
 	}
 	
 	@Test
 	void testGet() throws IOException, SQLException {
-		Trabajador trabajadorTest = Trabajador.Get(1);
-		assertEquals(1, trabajadorTest.GetId());
-		assertEquals("Javier", trabajadorTest.GetNombre());
+		Trabajador trabajador = Trabajador.Get(1);
+		assertEquals("Javier", trabajador.GetNombre());
 		
-		trabajadorTest = Trabajador.Get(8);
-		assertNull(trabajadorTest);
+		trabajador = Trabajador.Get(8);
+		assertNull(trabajador);
+	}
+	
+	@Test
+	void testSaveDelete() throws IOException, SQLException {
+		// Punto 1
+		Trabajador trabajador = new Trabajador("O'Connell");
+		trabajador.Save();
+		int iClave = trabajador.GetId();
+		// Punto 2
+		trabajador = Trabajador.Get(iClave);
+		assertEquals(iClave, trabajador.GetId());
+		assertEquals("O'Connell", trabajador.GetNombre());
+		assertNull(trabajador.GetDeletedAt());
+		//Punto 3
+		trabajador.SetNombre("PepitoGrillo");
+		trabajador.Save();
+		trabajador = Trabajador.Get(iClave);
+		assertEquals("PepitoGrillo", trabajador.GetNombre());
+		//Punto 4
+		trabajador.Delete();
+		assertNotNull(trabajador.GetDeletedAt());
+		//Punto 5
+		assertNull(Trabajador.Get(iClave));		
 	}
 }

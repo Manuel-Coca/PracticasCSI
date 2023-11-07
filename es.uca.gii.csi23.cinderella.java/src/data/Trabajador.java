@@ -82,12 +82,13 @@ public class Trabajador {
 	public void Save() throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
-		
+	
 		try {
 			con = Database.Connection();
 			rs = con.createStatement().executeQuery("SELECT id FROM trabajador WHERE id = " + this.GetId() + ";");
+			System.out.println(rs.next());
 			
-			if(rs.next()) {
+			if(!rs.next()) {
 				int iLastId = Database.LastId(con);
 				con.createStatement().executeQuery("INSERT INTO trabajador (id, nombre) VALUES (" + iLastId + "," + Database.String2Sql(this.GetNombre(), false, false) + ");");
 				_iId = iLastId;

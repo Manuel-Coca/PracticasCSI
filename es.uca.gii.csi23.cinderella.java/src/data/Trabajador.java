@@ -87,6 +87,13 @@ public class Trabajador {
 			con = Database.Connection();
 			rs = con.createStatement().executeQuery("SELECT id FROM trabajador WHERE id = " + this.GetId() + ";");
 
+			/*
+			 * if(_id == null)
+			 * 	insert nombre
+			 * 	_iId = Database.LastId(con);
+			 * else
+			 * 	UPDATE trabajador SET nombre = '" + Database.String2Sql(this.GetNombre(), false, false) + "' WHERE id = '" + this.GetId() + "';"
+			 */
 			if(!rs.next()) {
 				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + this.GetId() + ", " + Database.String2Sql(this.GetNombre(), true, false) + ");");
 				int iLastId = Database.LastId(con);

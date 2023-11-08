@@ -96,8 +96,7 @@ public class Trabajador {
 			 */
 			if(!rs.next()) {
 				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + this.GetId() + ", " + Database.String2Sql(this.GetNombre(), true, false) + ");");
-				int iLastId = Database.LastId(con);
-				_iId = iLastId;
+				_iId = Database.LastId(con);
 			} 
 			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = '" + Database.String2Sql(this.GetNombre(), false, false) + "' WHERE id = '" + this.GetId() + "';");
 		}

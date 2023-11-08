@@ -57,4 +57,26 @@ class trabajador {
 
 		assertNull(Trabajador.Get(iClavePrimaria));
 	}
+
+	@Test
+	void testSearch() throws IOException, SQLException {
+		List<Trabajador> aTrabajador = Trabajador.Search(null);
+		
+		assertEquals(3, aTrabajador.size());
+		assertEquals("Antonio", aTrabajador.get(0).GetNombre());
+		assertEquals("Javier", aTrabajador.get(1).GetNombre());
+		assertEquals("Pablo", aTrabajador.get(2).GetNombre());
+		
+		aTrabajador = Trabajador.Search("Javier");
+	    	assertEquals(1, aTrabajador.size());
+	    	assertEquals("Javier", aTrabajador.get(0).GetNombre());
+		
+		aTrabajador = Trabajador.Search("PepitoGrillo");
+	    	assertEquals(0, aTrabajador.size());
+	    
+	    	aTrabajador = Trabajador.Search("o");
+	    	assertEquals(2, aTrabajador.size());
+		assertEquals("Antonio", aTrabajador.get(0).GetNombre());
+		assertEquals("Pablo", aTrabajador.get(1).GetNombre());
+	}
 }

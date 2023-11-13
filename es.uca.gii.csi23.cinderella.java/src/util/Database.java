@@ -30,14 +30,7 @@ public class Database {
 		Class.forName(Config.Properties(getPropertiesUrl()).getProperty(
 				"jdbc.driverClassName")).getDeclaredConstructor().newInstance();
 	}
-	
-	
-	/**
-	 * @param s
-	 * @param bAddQuotes
-	 * @param bAddWildcards
-	 * @return
-	 */
+
 	public static String String2Sql(String s, boolean bAddQuotes, boolean bAddWildcards) {
 		s = s.replace("'", "''");
 		
@@ -46,20 +39,10 @@ public class Database {
 		
 		return s;
 	}
-	
-	/**
-	 * @param b
-	 * @return
-	 */
+
 	public static int Boolean2Sql(boolean b) { return b ? 1 : 0; }
-	
-	
-	/**
-	 * @param con
-	 * @return
-	 * @throws SQLException
-	 */
-	public static Integer LastId(Connection con) throws SQLException {
+
+	public static int LastId(Connection con) throws SQLException {
 		ResultSet rs = null;
 		
 		try {

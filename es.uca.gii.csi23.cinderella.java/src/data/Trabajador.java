@@ -12,50 +12,30 @@ import util.Database;
 public class Trabajador {
 	
 	private Integer _iId;
-	
 	public Integer GetId() { return _iId; }
 	
 	private String _sNombre;
-	
 	public String GetNombre() { return _sNombre; }
-	
 	public void SetNombre(String sNombre) {
 		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo.");
 		_sNombre = sNombre;
 	}
 	
 	private Date _dtDeletedAt = null;
-	
 	public Date GetDeletedAt() { return _dtDeletedAt; }
 	
-	/**
-	 * Constructor público de la clase Trabajador.
-	 * @param sNombre
-	 */
 	public Trabajador(String sNombre) { this(null, sNombre); }
 	
-	/**
-	 * Constructor privado de la clase Trabajador.
-	 * @param iId
-	 * @param sNombre
-	 */
 	private Trabajador(Integer iId, String sNombre) {
-		_iId = iId;
 		SetNombre(sNombre);
+		_iId = iId;
 	}
 	
 	/**
 	 * Devuelve una cadena con formato SuperClase.Clase@CodigoHash:Id:Nombre.
 	 */
-	public String toString() { return super.toString() + ":" + GetId() + ":" + GetNombre(); }
+	public String toString() { return super.toString() + ":" + _iId + ":" + _sNombre; }
 	
-	/**
-	 * Hace una búsqueda a la tabla Trabajador. Devuelve una instancia de la clase Trabajador si la búsqueda ha tenido éxito o NULL si no.
-	 * @param iId
-	 * @return TrabajadorAuxiliar
-	 * @throws IOException
-	 * @throws SQLException
-	 */
 	public static Trabajador Get(int iId) throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
@@ -85,10 +65,10 @@ public class Trabajador {
 			con = Database.Connection();
 			
 			if(_iId == null) {
-				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + this.GetId() + ", " + Database.String2Sql(this.GetNombre(), true, false) + ");");
+				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + _iId + ", " + Database.String2Sql(_sNombre, true, false) + ");");
 				_iId = Database.LastId(con);
 			} 
-			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(this.GetNombre(), true, false) + " WHERE id = " + this.GetId() + ";");
+			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + " WHERE id = " + _iId + ";");
 		}
 		finally {
 			if (con != null) con.close();
@@ -115,22 +95,11 @@ public class Trabajador {
 		}
 	}
 	
-	/**
-	 * @param sNombre
-	 * @return String("")
-	 */
 	private static String Where(String sNombre) {
         if(sNombre != null) return " WHERE nombre LIKE " + Database.String2Sql(sNombre, true, true);
         return new String("");
     }
-	
-	/**
-	 * Realiza una búsqueda en la base de datos según un valor del campo nombre. Si no se introduce un valor devuelve toda la lista.
-	 * @param sNombre
-	 * @return ArrayList<Trabajador> aResultado
-	 * @throws IOException
-	 * @throws SQLException
-	 */
+
 	public static List<Trabajador> Search(String sNombre) throws IOException, SQLException {
         Connection con = null;
         ResultSet rs = null;
@@ -139,7 +108,7 @@ public class Trabajador {
             con = Database.Connection();
             rs = con.createStatement().executeQuery("SELECT id, nombre FROM trabajador" + Where(sNombre) + " ORDER BY nombre ASC;");
 
-            List<Trabajador> aResultado = new ArrayList<>();
+            List<Trabajador> aResultado = new ArrayList<Trabajador>();
             while(rs.next()) aResultado.add(new Trabajador(rs.getInt("id"), rs.getString("nombre")));            
             
             return aResultado;

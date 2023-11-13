@@ -32,30 +32,28 @@ class trabajador {
 		Trabajador trabajador = Trabajador.Get(1);
 		assertEquals("Javier", trabajador.GetNombre());
 		
-		trabajador = Trabajador.Get(8);
-		assertNull(trabajador);
+		assertNull(Trabajador.Get(8));
 	}
 	
 	@Test
 	void testSaveDelete() throws IOException, SQLException {
 		Trabajador trabajador = new Trabajador("O'Connell");
 		trabajador.Save();
-		int iClavePrimaria = trabajador.GetId();
+		int iId = trabajador.GetId();
 		
-		trabajador = Trabajador.Get(iClavePrimaria);
-		assertEquals(iClavePrimaria, trabajador.GetId());
+		trabajador = Trabajador.Get(iId);
+		assertEquals(iId, trabajador.GetId());
 		assertEquals("O'Connell", trabajador.GetNombre());
 		assertNull(trabajador.GetDeletedAt());
 
 		trabajador.SetNombre("PepitoGrillo");
 		trabajador.Save();
-		trabajador = Trabajador.Get(iClavePrimaria);
+		trabajador = Trabajador.Get(iId);
 		assertEquals("PepitoGrillo", trabajador.GetNombre());
 
 		trabajador.Delete();
 		assertNotNull(trabajador.GetDeletedAt());
-
-		assertNull(Trabajador.Get(iClavePrimaria));
+		assertNull(Trabajador.Get(iId));
 	}
 	
 	@Test

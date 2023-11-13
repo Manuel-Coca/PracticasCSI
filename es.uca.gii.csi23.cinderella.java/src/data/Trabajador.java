@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import util.Database;
 
 public class Trabajador {
@@ -21,7 +20,7 @@ public class Trabajador {
 	public String GetNombre() { return _sNombre; }
 	
 	public void SetNombre(String sNombre) {
-		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo");
+		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo.");
 		_sNombre = sNombre;
 	}
 	
@@ -30,13 +29,13 @@ public class Trabajador {
 	public Date GetDeletedAt() { return _dtDeletedAt; }
 	
 	/**
-	 * Constructor publico de la clase Trabajador
+	 * Constructor público de la clase Trabajador.
 	 * @param sNombre
 	 */
 	public Trabajador(String sNombre) { this(null, sNombre); }
 	
 	/**
-	 * Constructor privado de la clase Trabajador
+	 * Constructor privado de la clase Trabajador.
 	 * @param iId
 	 * @param sNombre
 	 */
@@ -46,12 +45,12 @@ public class Trabajador {
 	}
 	
 	/**
-	 * Devuelve una cadena con formato SuperClase.Clase@CodigoHash:Id:Nombre
+	 * Devuelve una cadena con formato SuperClase.Clase@CodigoHash:Id:Nombre.
 	 */
 	public String toString() { return super.toString() + ":" + GetId() + ":" + GetNombre(); }
 	
 	/**
-	 * Hace una busqueda a la tabla Trabajador. Devuelve una instancia de la clase Trabajador si la busqueda ha tenido exito o NULL si no
+	 * Hace una búsqueda a la tabla Trabajador. Devuelve una instancia de la clase Trabajador si la búsqueda ha tenido éxito o NULL si no.
 	 * @param iId
 	 * @return TrabajadorAuxiliar
 	 * @throws IOException
@@ -64,54 +63,44 @@ public class Trabajador {
 		try {
 			con = Database.Connection();
 			rs = con.createStatement().executeQuery("SELECT id, nombre FROM Trabajador WHERE id = " + iId + ";");
+			
 			if(rs.next()) return new Trabajador(rs.getInt("id"), rs.getString("nombre"));
+			return null;
 		}
 		finally {
 			if (rs != null) rs.close();
 			if (con != null) con.close();
 		}
-		
-		return null;
 	}
 	
 	/**
-	 * Guarda la instancia de la clase si dicha instancia no existe en la base de datos. En caso contrario, la actualiza
+	 * Guarda la instancia de la clase si dicha instancia no existe en la base de datos. En caso contrario, la actualiza.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
 	public void Save() throws IOException, SQLException {
 		Connection con = null;
-		ResultSet rs = null;
 	
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT id FROM trabajador WHERE id = " + this.GetId() + ";");
-
-			/*
-			 * if(_id == null)
-			 * 	insert nombre
-			 * 	_iId = Database.LastId(con);
-			 * else
-			 * 	UPDATE trabajador SET nombre = '" + Database.String2Sql(this.GetNombre(), false, false) + "' WHERE id = '" + this.GetId() + "';"
-			 */
-			if(!rs.next()) {
+			
+			if(_iId == null) {
 				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + this.GetId() + ", " + Database.String2Sql(this.GetNombre(), true, false) + ");");
 				_iId = Database.LastId(con);
 			} 
-			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = '" + Database.String2Sql(this.GetNombre(), false, false) + "' WHERE id = '" + this.GetId() + "';");
+			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(this.GetNombre(), true, false) + " WHERE id = " + this.GetId() + ";");
 		}
 		finally {
-			if (rs != null) rs.close();
 			if (con != null) con.close();
 		}
 	}
 	
 	/**
-	 * Elimina un registro de la base de datos
+	 * Elimina un registro de la base de datos.
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public void Delete() throws IOException, SQLException {
+	public void Delete() throws IOException, SQLException { 
 		if(_iId == null || _dtDeletedAt != null) throw new IllegalStateException();
 		
 		Connection con = null;
@@ -136,7 +125,8 @@ public class Trabajador {
     }
 	
 	/**
-	 * @param searchTerm
+	 * Realiza una búsqueda en la base de datos según un valor del campo nombre. Si no se introduce un valor devuelve toda la lista.
+	 * @param sNombre
 	 * @return ArrayList<Trabajador> aResultado
 	 * @throws IOException
 	 * @throws SQLException
@@ -153,52 +143,10 @@ public class Trabajador {
             while(rs.next()) aResultado.add(new Trabajador(rs.getInt("id"), rs.getString("nombre")));            
             
             return aResultado;
-        }finally {
+        }
+        finally {
             if (rs != null) rs.close();
             if (con != null) con.close();
         }
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

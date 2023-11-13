@@ -59,7 +59,7 @@ public class Database {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static int LastId(Connection con) throws SQLException {
+	public static Integer LastId(Connection con) throws SQLException {
 		ResultSet rs = null;
 		
 		try {

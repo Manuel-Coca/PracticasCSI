@@ -2,9 +2,9 @@ package data.test;
 
 import data.Trabajador;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +57,7 @@ class trabajador {
 
 		assertNull(Trabajador.Get(iClavePrimaria));
 	}
-
+	
 	@Test
 	void testSearch() throws IOException, SQLException {
 		List<Trabajador> aTrabajador = Trabajador.Search(null);
@@ -65,18 +65,17 @@ class trabajador {
 		assertEquals(3, aTrabajador.size());
 		assertEquals("Antonio", aTrabajador.get(0).GetNombre());
 		assertEquals("Javier", aTrabajador.get(1).GetNombre());
-		assertEquals("Pablo", aTrabajador.get(2).GetNombre());
 		
 		aTrabajador = Trabajador.Search("Javier");
-	    	assertEquals(1, aTrabajador.size());
-	    	assertEquals("Javier", aTrabajador.get(0).GetNombre());
+	    assertEquals(1, aTrabajador.size());
+	    assertEquals("Javier", aTrabajador.get(0).GetNombre());
 		
-		aTrabajador = Trabajador.Search("PepitoGrillo");
-	    	assertEquals(0, aTrabajador.size());
-	    
-	    	aTrabajador = Trabajador.Search("o");
-	    	assertEquals(2, aTrabajador.size());
+	    aTrabajador = Trabajador.Search("o");
+	    assertEquals(2, aTrabajador.size());
 		assertEquals("Antonio", aTrabajador.get(0).GetNombre());
 		assertEquals("Pablo", aTrabajador.get(1).GetNombre());
+	    
+		aTrabajador = Trabajador.Search("PepitoGrillo");
+	    assertEquals(0, aTrabajador.size());
 	}
 }

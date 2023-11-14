@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class IfrTrabajador extends JInternalFrame {
+	
 	private Trabajador _trabajador = null;
 	private static final long serialVersionUID = 1L;
 	private JTextField txtName;
@@ -34,11 +35,11 @@ public class IfrTrabajador extends JInternalFrame {
 		
 		JLabel lblName = new JLabel("Nombre");
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setBounds(185, 83, 46, 14);
+		lblName.setBounds(186, 83, 46, 14);
 		getContentPane().add(lblName);
 		
 		txtName = new JTextField();
-		txtName.setHorizontalAlignment(SwingConstants.CENTER);
+		txtName.setHorizontalAlignment(SwingConstants.LEFT);
 		txtName.setBounds(166, 108, 86, 20);
 		getContentPane().add(txtName);
 		txtName.setColumns(10);
@@ -59,6 +60,5 @@ public class IfrTrabajador extends JInternalFrame {
 		});
 		butSave.setBounds(166, 162, 89, 23);
 		getContentPane().add(butSave);
-
 	}
 }

@@ -33,7 +33,7 @@ public class FrmMain {
 	/**
 	 * Create the application.
 	 */
-	public FrmMain() throws Exception{
+	public FrmMain() throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		initialize();
 	}
@@ -68,7 +68,7 @@ public class FrmMain {
 
 	public void ShowInternalFrame(JInternalFrame ifr, int iX, int iY, int iWidth, int iHeight) {
 		ifr.setBounds(iX, iY, iWidth, iHeight);
-		_frame.getContentPane().add(ifr);
+		_frame.getContentPane().add(ifr); 
 		ifr.setVisible(true);
 	}
 }

@@ -17,7 +17,7 @@ public class Trabajador {
 	private String _sNombre;
 	public String GetNombre() { return _sNombre; }
 	public void SetNombre(String sNombre) {
-		if(sNombre == null) throw new IllegalArgumentException("El nombre no puede ser nulo.");
+		if(sNombre == null || sNombre == "") throw new IllegalArgumentException("El nombre no puede ser nulo ni una cadena vacia.");
 		_sNombre = sNombre;
 	}
 	
@@ -65,7 +65,7 @@ public class Trabajador {
 			con = Database.Connection();
 			
 			if(_iId == null) {
-				con.createStatement().executeUpdate("INSERT INTO trabajador (id, nombre) VALUES (" + _iId + ", " + Database.String2Sql(_sNombre, true, false) + ");");
+				con.createStatement().executeUpdate("INSERT INTO trabajador (nombre) VALUES (" + Database.String2Sql(_sNombre, true, false) + ");");
 				_iId = Database.LastId(con);
 			} 
 			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + " WHERE id = " + _iId + ";");
@@ -81,13 +81,13 @@ public class Trabajador {
 	 * @throws SQLException
 	 */
 	public void Delete() throws IOException, SQLException { 
-		if(_iId == null || _dtDeletedAt != null) throw new IllegalStateException();
+		if(_iId == null || _dtDeletedAt != null) throw new IllegalStateException("El trabajador no existe o ya ha sido eliminado");
 		
 		Connection con = null;
 		
 		try {
 			con = Database.Connection();
-			con.createStatement().executeUpdate("DELETE FROM trabajador WHERE id = " + this.GetId() + ";");			
+			con.createStatement().executeUpdate("DELETE FROM trabajador WHERE id = " + _iId + ";");			
 			_dtDeletedAt = new Date();
 		}
 		finally {
@@ -97,7 +97,7 @@ public class Trabajador {
 	
 	private static String Where(String sNombre) {
         if(sNombre != null) return " WHERE nombre LIKE " + Database.String2Sql(sNombre, true, true);
-        return new String("");
+        return "";
     }
 
 	public static List<Trabajador> Search(String sNombre) throws IOException, SQLException {

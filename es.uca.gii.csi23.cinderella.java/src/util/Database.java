@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.io.FileInputStream;
 
 public class Database {
 
@@ -42,11 +43,13 @@ public class Database {
 
 	public static int Boolean2Sql(boolean b) { return b ? 1 : 0; }
 
-	public static int LastId(Connection con) throws SQLException {
+	public static int LastId(Connection con) throws SQLException, IOException {
 		ResultSet rs = null;
+		Properties prop = new Properties();
 		
 		try {
-			rs = con.createStatement().executeQuery("SELECT LAST_INSERT_ID() AS LastId");
+			prop.load(new FileInputStream("./db.properties"));
+			rs = con.createStatement().executeQuery(prop.getProperty("jdbc.lastIdSentence"));
 			rs.next();
 			return rs.getInt("LastId");
 		}

@@ -63,7 +63,5 @@ public class IfrTrabajadores extends JInternalFrame {
 			}
 		});
 		getContentPane().add(tabResult, BorderLayout.CENTER);
-
 	}
-
 }

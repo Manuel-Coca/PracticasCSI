@@ -61,4 +61,12 @@ public class IfrTrabajador extends JInternalFrame {
 		butSave.setBounds(166, 162, 89, 23);
 		getContentPane().add(butSave);
 	}
+	
+	public IfrTrabajador(Trabajador trabajador) {
+		this();
+		
+		if(trabajador == null) throw new IllegalArgumentException("El trabajador no puede ser nulo");
+		this.txtName.setText(trabajador.GetNombre());
+		_trabajador = trabajador;
+	}
 }

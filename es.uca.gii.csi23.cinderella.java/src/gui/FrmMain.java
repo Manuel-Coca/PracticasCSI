@@ -54,7 +54,7 @@ public class FrmMain {
 		
 		JMenuItem mitNewTrabajador = new JMenuItem("Trabajador");
 		mitNewTrabajador.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTrabajador(), 100, 100, 450, 300); } 
+			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTrabajador(), 0, 0, 450, 300); } 
 		});
 		mnuNew.add(mitNewTrabajador);
 		
@@ -62,6 +62,9 @@ public class FrmMain {
 		menuBar.add(mnuSearch);
 		
 		JMenuItem mitSearchTabajador = new JMenuItem("Trabajador");
+		mitSearchTabajador.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTrabajadores(getThis()), 300, 300, 450, 500); } 
+		});
 		mnuSearch.add(mitSearchTabajador);
 		_frame.getContentPane().setLayout(null);
 	}
@@ -71,4 +74,6 @@ public class FrmMain {
 		_frame.getContentPane().add(ifr); 
 		ifr.setVisible(true);
 	}
+	
+	public FrmMain getThis() { return this; }
 }

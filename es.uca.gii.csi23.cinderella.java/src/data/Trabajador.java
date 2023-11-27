@@ -17,7 +17,7 @@ public class Trabajador {
 	private String _sNombre;
 	public String GetNombre() { return _sNombre; }
 	public void SetNombre(String sNombre) {
-		if(sNombre == null || sNombre == "") throw new IllegalArgumentException("El nombre no puede ser nulo ni una cadena vacia.");
+		if(sNombre == null || sNombre.equals("")) throw new IllegalArgumentException("El nombre no puede ser nulo ni una cadena vacia.");
 		_sNombre = sNombre;
 	}
 	

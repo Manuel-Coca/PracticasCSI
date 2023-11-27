@@ -66,7 +66,7 @@ public class IfrTrabajador extends JInternalFrame {
 		this();
 		
 		if(trabajador == null) throw new IllegalArgumentException("El trabajador no puede ser nulo");
-		this.txtName.setText(trabajador.GetNombre());
+		txtName.setText(trabajador.GetNombre());
 		_trabajador = trabajador;
 	}
 }

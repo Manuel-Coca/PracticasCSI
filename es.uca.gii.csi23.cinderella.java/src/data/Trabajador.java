@@ -21,13 +21,21 @@ public class Trabajador {
 		_sNombre = sNombre;
 	}
 	
+	private TipoTrabajador _tipoTrabajador;
+	public TipoTrabajador GetTipoTrabajador() { return _tipoTrabajador; }
+	public void SetTipoTrabajador(TipoTrabajador tipoTrabajador) { 
+		if(tipoTrabajador == null) throw new IllegalArgumentException("El tipo de trabajador no puede ser nulo.");
+		_tipoTrabajador = tipoTrabajador; 
+	}
+	
 	private Date _dtDeletedAt = null;
 	public Date GetDeletedAt() { return _dtDeletedAt; }
 	
-	public Trabajador(String sNombre) { this(null, sNombre); }
+	public Trabajador(String sNombre, TipoTrabajador tipoTrabajador) { this(null, sNombre, tipoTrabajador); }
 	
-	private Trabajador(Integer iId, String sNombre) {
+	private Trabajador(Integer iId, String sNombre, TipoTrabajador tipoTrabajador) {
 		SetNombre(sNombre);
+		SetTipoTrabajador(tipoTrabajador);
 		_iId = iId;
 	}
 	
@@ -42,9 +50,9 @@ public class Trabajador {
 		
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT id, nombre FROM Trabajador WHERE id = " + iId + ";");
+			rs = con.createStatement().executeQuery("SELECT id, nombre, tipotrabajador_id FROM Trabajador WHERE id = " + iId + ";");
 			
-			if(rs.next()) return new Trabajador(rs.getInt("id"), rs.getString("nombre"));
+			if(rs.next()) return new Trabajador(rs.getInt("id"), rs.getString("nombre"), TipoTrabajador.Get(rs.getInt("tipotrabajador_id")));
 			return null;
 		}
 		finally {
@@ -65,10 +73,10 @@ public class Trabajador {
 			con = Database.Connection();
 			
 			if(_iId == null) {
-				con.createStatement().executeUpdate("INSERT INTO trabajador (nombre) VALUES (" + Database.String2Sql(_sNombre, true, false) + ");");
+				con.createStatement().executeUpdate("INSERT INTO trabajador (nombre, tipotrabajador_id) VALUES (" + Database.String2Sql(_sNombre, true, false) + ", " + _tipoTrabajador.GetId() + ");");
 				_iId = Database.LastId(con);
 			} 
-			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + " WHERE id = " + _iId + ";");
+			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + ", " + "tipotrabajador_id = " + _tipoTrabajador.GetId() + " WHERE id = " + _iId + ";");
 		}
 		finally {
 			if (con != null) con.close();
@@ -95,21 +103,21 @@ public class Trabajador {
 		}
 	}
 	
-	private static String Where(String sNombre) {
-        if(sNombre != null) return " WHERE nombre LIKE " + Database.String2Sql(sNombre, true, true);
+	private static String Where(String sNombre, String sTipoTrabajador) {
+        if(sNombre != null) return " WHERE t.nombre LIKE " + Database.String2Sql(sNombre, true, true) + " AND tt.nombre LIKE " + Database.String2Sql(sTipoTrabajador, true, true);
         return "";
     }
 
-	public static List<Trabajador> Search(String sNombre) throws IOException, SQLException {
+	public static List<Trabajador> Search(String sNombre, String sTipoTrabajador) throws IOException, SQLException {
         Connection con = null;
         ResultSet rs = null;
 
         try {
             con = Database.Connection();
-            rs = con.createStatement().executeQuery("SELECT id, nombre FROM trabajador" + Where(sNombre) + " ORDER BY nombre ASC;");
+            rs = con.createStatement().executeQuery("SELECT t.id, t.nombre, tt.id FROM trabajador t JOIN tipotrabajador tt ON t.TipoTrabajador_id = tt.id " + Where(sNombre, sTipoTrabajador) + " ORDER BY t.nombre ASC;");
 
             List<Trabajador> aResultado = new ArrayList<Trabajador>();
-            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("id"), rs.getString("nombre")));            
+            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("t.id"), rs.getString("t.nombre"), TipoTrabajador.Get(rs.getInt("tt.id"))));            
             
             return aResultado;
         }

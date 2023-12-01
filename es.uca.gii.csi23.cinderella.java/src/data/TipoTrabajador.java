@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import util.Database;
 
-public class Trabajador {
+public class TipoTrabajador {
 	
 	private Integer _iId;
 	public Integer GetId() { return _iId; }
@@ -21,21 +21,13 @@ public class Trabajador {
 		_sNombre = sNombre;
 	}
 	
-	private TipoTrabajador _tipoTrabajador;
-	public TipoTrabajador GetTipoTrabajador() { return _tipoTrabajador; }
-	public void SetTipoTrabajador(TipoTrabajador tipoTrabajador) { 
-		if(tipoTrabajador == null) throw new IllegalArgumentException("El tipo de trabajador no puede ser nulo.");
-		_tipoTrabajador = tipoTrabajador; 
-	}
-	
 	private Date _dtDeletedAt = null;
 	public Date GetDeletedAt() { return _dtDeletedAt; }
 	
-	public Trabajador(String sNombre, TipoTrabajador tipoTrabajador) { this(null, sNombre, tipoTrabajador); }
+	public TipoTrabajador(String sNombre) { this(null, sNombre); }
 	
-	private Trabajador(Integer iId, String sNombre, TipoTrabajador tipoTrabajador) {
+	private TipoTrabajador(Integer iId, String sNombre) {
 		SetNombre(sNombre);
-		SetTipoTrabajador(tipoTrabajador);
 		_iId = iId;
 	}
 	
@@ -44,15 +36,15 @@ public class Trabajador {
 	 */
 	public String toString() { return super.toString() + ":" + _iId + ":" + _sNombre; }
 	
-	public static Trabajador Get(int iId) throws IOException, SQLException {
+	public static TipoTrabajador Get(int iId) throws IOException, SQLException {
 		Connection con = null;
 		ResultSet rs = null;
 		
 		try {
 			con = Database.Connection();
-			rs = con.createStatement().executeQuery("SELECT id, nombre, tipotrabajador_id FROM Trabajador WHERE id = " + iId + ";");
+			rs = con.createStatement().executeQuery("SELECT id, nombre FROM tipotrabajador WHERE id = " + iId + ";");
 			
-			if(rs.next()) return new Trabajador(rs.getInt("id"), rs.getString("nombre"), TipoTrabajador.Get(rs.getInt("tipotrabajador_id")));
+			if(rs.next()) return new TipoTrabajador(rs.getInt("id"), rs.getString("nombre"));
 			return null;
 		}
 		finally {
@@ -73,10 +65,10 @@ public class Trabajador {
 			con = Database.Connection();
 			
 			if(_iId == null) {
-				con.createStatement().executeUpdate("INSERT INTO trabajador (nombre, tipotrabajador_id) VALUES (" + Database.String2Sql(_sNombre, true, false) + ", " + _tipoTrabajador.GetId() + ");");
+				con.createStatement().executeUpdate("INSERT INTO tipotrabajador (nombre) VALUES (" + Database.String2Sql(_sNombre, true, false) + ");");
 				_iId = Database.LastId(con);
 			} 
-			else con.createStatement().executeUpdate("UPDATE trabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + ", " + "tipotrabajador_id = " + _tipoTrabajador.GetId() + " WHERE id = " + _iId + ";");
+			else con.createStatement().executeUpdate("UPDATE tipotrabajador SET nombre = " + Database.String2Sql(_sNombre, true, false) + " WHERE id = " + _iId + ";");
 		}
 		finally {
 			if (con != null) con.close();
@@ -89,13 +81,13 @@ public class Trabajador {
 	 * @throws SQLException
 	 */
 	public void Delete() throws IOException, SQLException { 
-		if(_iId == null || _dtDeletedAt != null) throw new IllegalStateException("El trabajador no existe o ya ha sido eliminado");
+		if(_iId == null || _dtDeletedAt != null) throw new IllegalStateException("El tipo de trabajador no existe o ya ha sido eliminado");
 		
 		Connection con = null;
 		
 		try {
 			con = Database.Connection();
-			con.createStatement().executeUpdate("DELETE FROM trabajador WHERE id = " + _iId + ";");			
+			con.createStatement().executeUpdate("DELETE FROM tipotrabajador WHERE id = " + _iId + ";");			
 			_dtDeletedAt = new Date();
 		}
 		finally {
@@ -103,21 +95,21 @@ public class Trabajador {
 		}
 	}
 	
-	private static String Where(String sNombre, String sTipoTrabajador) {
-        if(sNombre != null) return " WHERE t.nombre LIKE " + Database.String2Sql(sNombre, true, true) + " AND tt.nombre LIKE " + Database.String2Sql(sTipoTrabajador, true, true);
+	private static String Where(String sNombre) {
+        if(sNombre != null) return " WHERE nombre LIKE " + Database.String2Sql(sNombre, true, true);
         return "";
     }
 
-	public static List<Trabajador> Search(String sNombre, String sTipoTrabajador) throws IOException, SQLException {
+	public static List<TipoTrabajador> Search(String sNombre) throws IOException, SQLException {
         Connection con = null;
         ResultSet rs = null;
 
         try {
             con = Database.Connection();
-            rs = con.createStatement().executeQuery("SELECT t.id, t.nombre, tt.id FROM trabajador t JOIN tipotrabajador tt ON t.TipoTrabajador_id = tt.id " + Where(sNombre, sTipoTrabajador) + " ORDER BY t.nombre ASC;");
+            rs = con.createStatement().executeQuery("SELECT id, nombre FROM tipotrabajador" + Where(sNombre) + " ORDER BY nombre ASC;");
 
-            List<Trabajador> aResultado = new ArrayList<Trabajador>();
-            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("t.id"), rs.getString("t.nombre"), TipoTrabajador.Get(rs.getInt("tt.id"))));            
+            List<TipoTrabajador> aResultado = new ArrayList<TipoTrabajador>();
+            while(rs.next()) aResultado.add(new TipoTrabajador(rs.getInt("id"), rs.getString("nombre")));            
             
             return aResultado;
         }

@@ -104,7 +104,12 @@ public class Trabajador {
 	}
 	
 	private static String Where(String sNombre, String sTipoTrabajador) {
-        if(sNombre != null) return " WHERE t.nombre LIKE " + Database.String2Sql(sNombre, true, true) + " AND tt.nombre LIKE " + Database.String2Sql(sTipoTrabajador, true, true);
+        List<String> aCondiciones = new ArrayList<String>();
+        
+		if(sNombre != null) aCondiciones.add("trabajador.nombre LIKE " + Database.String2Sql(sNombre, true, true));
+		if(sTipoTrabajador != null) aCondiciones.add("tipotrabajador.nombre LIKE " + Database.String2Sql(sTipoTrabajador, true, true));
+		if(!aCondiciones.isEmpty()) return " WHERE " + String.join(" AND ", aCondiciones);
+		
         return "";
     }
 
@@ -114,10 +119,12 @@ public class Trabajador {
 
         try {
             con = Database.Connection();
-            rs = con.createStatement().executeQuery("SELECT t.id, t.nombre, tt.id FROM trabajador t JOIN tipotrabajador tt ON t.TipoTrabajador_id = tt.id " + Where(sNombre, sTipoTrabajador) + " ORDER BY t.nombre ASC;");
+            rs = con.createStatement().executeQuery("SELECT trabajador.id, trabajador.nombre, tipotrabajador.id FROM trabajador "
+            		+ "JOIN tipotrabajador ON trabajador.TipoTrabajador_id = tipotrabajador.id " + Where(sNombre, sTipoTrabajador) 
+            		+ " ORDER BY trabajador.nombre ASC;");
 
             List<Trabajador> aResultado = new ArrayList<Trabajador>();
-            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("t.id"), rs.getString("t.nombre"), TipoTrabajador.Get(rs.getInt("tt.id"))));            
+            while(rs.next()) aResultado.add(new Trabajador(rs.getInt("trabajador.id"), rs.getString("trabajador.nombre"), TipoTrabajador.Get(rs.getInt("tipotrabajador.id"))));            
             
             return aResultado;
         }

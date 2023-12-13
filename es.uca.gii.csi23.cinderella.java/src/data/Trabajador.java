@@ -104,14 +104,14 @@ public class Trabajador {
 	}
 	
 	private static String Where(String sNombre, String sTipoTrabajador) {
-        	List<String> aCondiciones = new ArrayList<String>();
+        List<String> aCondiciones = new ArrayList<String>();
         
 		if(sNombre != null) aCondiciones.add("trabajador.nombre LIKE " + Database.String2Sql(sNombre, true, true));
 		if(sTipoTrabajador != null) aCondiciones.add("tipotrabajador.nombre LIKE " + Database.String2Sql(sTipoTrabajador, true, true));
 		if(!aCondiciones.isEmpty()) return " WHERE " + String.join(" AND ", aCondiciones);
 		
-        	return "";
-    	}
+        return "";
+    }
 
 	public static List<Trabajador> Search(String sNombre, String sTipoTrabajador) throws IOException, SQLException {
         Connection con = null;

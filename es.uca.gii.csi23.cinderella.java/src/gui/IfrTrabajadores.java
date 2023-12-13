@@ -11,20 +11,24 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import data.TipoTrabajador;
 import data.Trabajador;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
 
 public class IfrTrabajadores extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNombre;
 	private JTable tabResult;
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public IfrTrabajadores(FrmMain frmMain) {
+		setClosable(true);
 		setTitle("Trabajadores");
 		setBounds(100, 100, 450, 300);
 		
@@ -39,10 +43,23 @@ public class IfrTrabajadores extends JInternalFrame {
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 		
+		JLabel lblTipoTrabajador = new JLabel("Tipo trabajador");
+		panel.add(lblTipoTrabajador);
+		
+		JComboBox<TipoTrabajador> cmbTipoTrabajador = new JComboBox<TipoTrabajador>();
+		try { cmbTipoTrabajador.setModel(new TipoTrabajadorListModel(TipoTrabajador.Search(null))); }
+		catch(Exception ex) {
+			JOptionPane.showMessageDialog(null, "Ha ocurrido un error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		cmbTipoTrabajador.setEditable(true);
+		panel.add(cmbTipoTrabajador);
+		
 		JButton butSearch = new JButton("Buscar");
 		butSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try { tabResult.setModel(new TrabajadoresTableModel(Trabajador.Search(txtNombre.getText()))); }
+				try { tabResult.setModel(new TrabajadoresTableModel(Trabajador.Search(
+						txtNombre.getText(),
+						cmbTipoTrabajador.getSelectedItem() == null ? null : cmbTipoTrabajador.getSelectedItem().toString()))); }
 				catch(Exception ex) {
 					JOptionPane.showMessageDialog(null, "Ha ocurrido un error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}

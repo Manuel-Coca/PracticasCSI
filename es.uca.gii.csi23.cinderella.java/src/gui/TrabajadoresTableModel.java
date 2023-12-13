@@ -14,12 +14,13 @@ public class TrabajadoresTableModel extends AbstractTableModel {
 	public int getRowCount() { return _aData.size(); }
 
 	@Override
-	public int getColumnCount() { return 1; }
+	public int getColumnCount() { return 2; }
 
 	@Override
 	public Object getValueAt(int iRow, int iColumn) {
 		switch(iColumn) {
 			case 0: return _aData.get(iRow).GetNombre();
+			case 1: return _aData.get(iRow).GetTipoTrabajador().GetNombre();
 			default: throw new IllegalArgumentException("Error, la columna no existe.");
 		}
 	}

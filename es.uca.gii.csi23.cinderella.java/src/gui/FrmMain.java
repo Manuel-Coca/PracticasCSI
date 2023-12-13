@@ -58,6 +58,12 @@ public class FrmMain {
 		});
 		mnuNew.add(mitNewTrabajador);
 		
+		JMenuItem mitNewTipoTrabajador = new JMenuItem("Tipo Trabajador");
+		mitNewTipoTrabajador.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTipoTrabajador(), 0, 0, 450, 300); } 
+		});
+		mnuNew.add(mitNewTipoTrabajador);
+		
 		JMenu mnuSearch = new JMenu("Buscar");
 		menuBar.add(mnuSearch);
 		
@@ -66,6 +72,13 @@ public class FrmMain {
 			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTrabajadores(getThis()), 300, 300, 450, 500); } 
 		});
 		mnuSearch.add(mitSearchTabajador);
+		
+		JMenuItem mitSearchTipoTabajador = new JMenuItem("Tipo Trabajador");
+		mitSearchTipoTabajador.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) { ShowInternalFrame(new IfrTiposTrabajadores(getThis()), 300, 300, 450, 500); } 
+		});
+		mnuSearch.add(mitSearchTipoTabajador);
+		
 		_frame.getContentPane().setLayout(null);
 	}
 

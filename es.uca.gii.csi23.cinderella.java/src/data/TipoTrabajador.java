@@ -34,7 +34,7 @@ public class TipoTrabajador {
 	/**
 	 * Devuelve una cadena con formato SuperClase.Clase@CodigoHash:Id:Nombre.
 	 */
-	public String toString() { return super.toString() + ":" + _iId + ":" + _sNombre; }
+	public String toString() { return _sNombre; }
 	
 	public static TipoTrabajador Get(int iId) throws IOException, SQLException {
 		Connection con = null;

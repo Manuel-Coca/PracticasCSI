@@ -67,7 +67,10 @@ public class IfrTrabajador extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(_trabajador == null) _trabajador = new Trabajador(txtName.getText(), (TipoTrabajador)cmbTipoTrabajador.getModel().getSelectedItem());
-					else _trabajador.SetNombre(txtName.getText());
+					else {
+						_trabajador.SetNombre(txtName.getText());
+						_trabajador.SetTipoTrabajador((TipoTrabajador)cmbTipoTrabajador.getModel().getSelectedItem());
+					}
 					
 					_trabajador.Save();
 				}
